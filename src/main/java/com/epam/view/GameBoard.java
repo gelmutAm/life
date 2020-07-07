@@ -3,6 +3,8 @@ package com.epam.view;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
 public class GameBoard extends JPanel {
     private ColonyField colonyField;
@@ -17,6 +19,41 @@ public class GameBoard extends JPanel {
     public GameBoard() {
         colonyField = new ColonyField(m, n);
         add(getComponentsTogether(colonyField, getButtonsPane()), BorderLayout.CENTER);
+
+        colonyField.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int x = e.getX();
+                int y = e.getY();
+                if (!colonyField.bacteriumExists(x, y)) {
+                    colonyField.createBacterium(x, y);
+                } else {
+                    colonyField.clearCell(x, y);
+                }
+
+                colonyField.repaint();
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
 
         startBtn.addActionListener((ActionEvent e) -> {
             colonyField.start();

@@ -65,4 +65,8 @@ public class ColonyFieldLogic implements ColonyFieldLogicInterface{
             createBacterium(coord, cellSize);
         }
     }
+
+    public boolean colonyIsEmpty() {
+        return colony.isEmpty();
+    }
 }

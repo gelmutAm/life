@@ -38,4 +38,21 @@ public class Colony {
             }
         }
     }
+
+    public boolean isEmpty() {
+        int qty = m * n;
+        for (int i = 0; i < m; i++) {
+            for (int j = 0; j < n; j++) {
+                if(colony[i][j] == null) {
+                    qty--;
+                }
+            }
+        }
+
+        if(qty == 0) {
+            return true;
+        }
+
+        return false;
+    }
 }

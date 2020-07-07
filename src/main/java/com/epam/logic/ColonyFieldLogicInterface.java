@@ -14,4 +14,6 @@ public interface ColonyFieldLogicInterface {
     void clearColony();
 
     void fillColony(int maxCoord, Pair<Integer, Integer> cellSize, int cellQty);
+
+    boolean colonyIsEmpty();
 }
