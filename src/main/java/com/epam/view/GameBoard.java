@@ -8,9 +8,9 @@ import java.awt.event.MouseListener;
 
 public class GameBoard extends JPanel {
     private ColonyField colonyField;
-    private Integer m = 5;
-    private Integer n = 10;
-    private Integer t = 0;
+    private Integer m = 140;
+    private Integer n = 140;
+    private Integer t = 20;
 
     private Button startBtn;
     private Button stopBtn;
@@ -56,8 +56,22 @@ public class GameBoard extends JPanel {
         });
 
         startBtn.addActionListener((ActionEvent e) -> {
-            colonyField.start();
+            colonyField.fillColony();
             colonyField.repaint();
+
+            Thread thread = new Thread(() -> {
+                for (int i = 0; i < t; i++) {
+                    colonyField.modifyColony();
+                    colonyField.repaint();
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
+                    }
+                }
+            });
+
+            thread.start();
         });
 
         stopBtn.addActionListener((ActionEvent e) -> {

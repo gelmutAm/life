@@ -69,4 +69,30 @@ public class ColonyFieldLogic implements ColonyFieldLogicInterface{
     public boolean colonyIsEmpty() {
         return colony.isEmpty();
     }
+
+    public void modifyColony(Pair<Integer, Integer> cellSize) {
+        Colony colonyCopy = new Colony(colony.getM(), colony.getN());
+        for (int row = 0; row < colony.getM(); row++) {
+            for (int column = 0; column < colony.getN(); column++) {
+                Bacterium bacterium = colony.getBacterium(row, column);
+                int neighboursQty = colony.getNeighboursQty(row, column);
+
+                if (bacterium == null) {
+                    if (neighboursQty == 3) {
+                        colonyCopy.createBacterium(row, column, row * cellSize.getKey()
+                                , column * cellSize.getValue());
+                    }
+                } else {
+                    if (neighboursQty < 2 || neighboursQty > 4) {
+                        colonyCopy.clearCell(row, column);
+                    } else {
+                        colonyCopy.createBacterium(row, column, row * cellSize.getKey()
+                                , column * cellSize.getValue());
+                    }
+                }
+            }
+        }
+
+        colony = colonyCopy;
+    }
 }

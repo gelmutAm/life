@@ -14,6 +14,14 @@ public class Colony {
         this.n = n;
     }
 
+    public int getM() {
+        return m;
+    }
+
+    public int getN() {
+        return n;
+    }
+
     public Bacterium getBacterium(int row, int column) {
         return colony[row][column];
     }
@@ -21,6 +29,17 @@ public class Colony {
     public boolean createBacterium(int row, int column) {
         if (colony[row][column] == null) {
             colony[row][column] = new Bacterium();
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean createBacterium(int row, int column, int x, int y) {
+        if (colony[row][column] == null) {
+            colony[row][column] = new Bacterium();
+            colony[row][column].setX(x);
+            colony[row][column].setY(y);
             return true;
         }
 
@@ -54,5 +73,36 @@ public class Colony {
         }
 
         return false;
+    }
+
+    public int getNeighboursQty(int row, int column) {
+        int topBound = row;
+        int bottomBound = row;
+        int leftBound = column;
+        int rightBound = column;
+
+        if (topBound - 1 > -1) {
+            topBound -= 1;
+        }
+        if (bottomBound + 2 <= m) {
+            bottomBound += 2;
+        }
+        if (leftBound - 1 > -1) {
+            leftBound -= 1;
+        }
+        if (rightBound + 2 <= n) {
+            rightBound += 2;
+        }
+
+        int qty = 0;
+        for (int i = topBound; i < bottomBound; i++) {
+            for (int j = leftBound; j < rightBound; j++) {
+                if (!(i == row && j == column) && colony[i][j] != null) {
+                    qty++;
+                }
+            }
+        }
+
+        return qty;
     }
 }

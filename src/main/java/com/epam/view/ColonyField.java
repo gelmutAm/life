@@ -24,7 +24,7 @@ public class ColonyField extends JPanel {
     public ColonyField(int m, int n) {
         colonyFieldLogic = DependencyResolver.getColonyFieldLogic(m, n);
         cellSize = new Pair<>(SIZE / m, SIZE / n);
-        cellQty = SIZE / (m * n);
+        cellQty = m * n;
         setColonyFieldStyle();
     }
 
@@ -34,7 +34,7 @@ public class ColonyField extends JPanel {
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 
-    public void start() {
+    public void fillColony() {
         if(colonyFieldLogic.colonyIsEmpty()) {
             colonyFieldLogic.fillColony(MAX_COORD, cellSize, cellQty);
         }
@@ -54,6 +54,10 @@ public class ColonyField extends JPanel {
 
     public void clearCell(int x, int y) {
         colonyFieldLogic.clearCell(new Pair<>(x, y), cellSize);
+    }
+
+    public void modifyColony() {
+        colonyFieldLogic.modifyColony(cellSize);
     }
 
     private void drawBacterium(Graphics g, int x, int y, int width, int heigth) {
