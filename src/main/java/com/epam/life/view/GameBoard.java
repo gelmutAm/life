@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.concurrent.ExecutionException;
 
 public class GameBoard extends JPanel {
     private ColonyField colonyField;
@@ -65,10 +66,19 @@ public class GameBoard extends JPanel {
                 colonyField.fillColony();
                 colonyField.repaint();
 
-                Thread thread = new Thread(() -> {
+                Thread manager = new Thread(() -> {
                     for (int i = 0; i < GameConfig.getT() && isRunning; i++) {
-                        colonyField.modifyColony();
+                        try {
+                            colonyField.modifyColony();
+                        } catch (ExecutionException executionException) {
+                            executionException.printStackTrace();
+                        } catch (InterruptedException interruptedException) {
+                            interruptedException.printStackTrace();
+                        }
                         colonyField.repaint();
+                        if ((!colonyField.changed()) || colonyField.isEmpty()) {
+                            enableBtns();
+                        }
                         try {
                             Thread.sleep(1_000);
                         } catch (InterruptedException interruptedException) {
@@ -79,7 +89,7 @@ public class GameBoard extends JPanel {
                     enableBtns();
                 });
 
-                thread.start();
+                manager.start();
             });
 
             stopBtn.addActionListener((ActionEvent e) -> {
@@ -123,15 +133,15 @@ public class GameBoard extends JPanel {
     private void disableBtns() {
         isRunning = true;
         startBtn.setLabel("Running");
-        startBtn.disable();
-        clearBtn.disable();
+        startBtn.setEnabled(false);
+        clearBtn.setEnabled(false);
     }
 
     private void enableBtns() {
         isRunning = false;
         startBtn.setLabel("Start");
-        startBtn.enable();
-        clearBtn.enable();
+        startBtn.setEnabled(true);
+        clearBtn.setEnabled(true);
     }
 }
 

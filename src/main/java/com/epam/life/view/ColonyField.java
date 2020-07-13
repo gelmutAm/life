@@ -9,6 +9,8 @@ import com.epam.life.models.Pair;
 import javax.swing.*;
 import java.awt.*;
 
+import java.util.concurrent.ExecutionException;
+
 public class ColonyField extends JPanel {
     public static final Integer SIZE = 280;
     private static final Integer MIN_COORD = 0;
@@ -54,8 +56,16 @@ public class ColonyField extends JPanel {
         colonyFieldLogic.clearCell(new Pair<>(x, y), cellSize);
     }
 
-    public void modifyColony() {
+    public void modifyColony() throws ExecutionException, InterruptedException {
         colonyFieldLogic.modifyColony(cellSize);
+    }
+
+    public boolean changed() {
+        return colonyFieldLogic.isColonyChanged();
+    }
+
+    public boolean isEmpty() {
+        return colonyFieldLogic.colonyIsEmpty();
     }
 
     private void drawBacterium(Graphics g, int x, int y, int width, int heigth) {
@@ -77,7 +87,6 @@ public class ColonyField extends JPanel {
     @Override
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
-
         drawColony(g);
     }
 }
