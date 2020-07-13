@@ -1,4 +1,4 @@
-package com.epam.view;
+package com.epam.life.view;
 
 import javax.swing.*;
 

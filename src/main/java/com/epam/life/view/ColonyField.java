@@ -1,30 +1,28 @@
-package com.epam.view;
+package com.epam.life.view;
 
-import com.epam.common.DependencyResolver;
-import com.epam.logic.ColonyFieldLogicInterface;
-import com.epam.models.Bacterium;
-import com.epam.models.Pair;
+import com.epam.life.common.DependencyResolver;
+import com.epam.life.common.GameConfig;
+import com.epam.life.logic.ColonyFieldLogic;
+import com.epam.life.models.Bacterium;
+import com.epam.life.models.Pair;
 
 import javax.swing.*;
 import java.awt.*;
 
 public class ColonyField extends JPanel {
-    private static final Integer SIZE = 280;
+    public static final Integer SIZE = 280;
     private static final Integer MIN_COORD = 0;
     private static final Integer MAX_COORD = SIZE;
 
     private static Pair<Integer, Integer> cellSize;
     private static Integer cellQty;
 
-    private ColonyFieldLogicInterface colonyFieldLogic;
+    private ColonyFieldLogic colonyFieldLogic;
 
     public ColonyField() {
-    }
-
-    public ColonyField(int m, int n) {
-        colonyFieldLogic = DependencyResolver.getColonyFieldLogic(m, n);
-        cellSize = new Pair<>(SIZE / m, SIZE / n);
-        cellQty = m * n;
+        colonyFieldLogic = DependencyResolver.getColonyFieldLogic();
+        cellSize = new Pair<>(SIZE / GameConfig.getM(), SIZE / GameConfig.getN());
+        cellQty = GameConfig.getM() * GameConfig.getN();
         setColonyFieldStyle();
     }
 

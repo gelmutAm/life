@@ -1,4 +1,4 @@
-package com.epam.models;
+package com.epam.life.models;
 
 public class Pair<T, V> {
     private T key;

@@ -1,18 +1,18 @@
-package com.epam.logic;
+package com.epam.life.logic;
 
-import com.epam.models.Bacterium;
-import com.epam.models.Colony;
-import com.epam.models.Pair;
+import com.epam.life.models.Bacterium;
+import com.epam.life.models.Colony;
+import com.epam.life.models.Pair;
 
 import java.util.Random;
 
-public class ColonyFieldLogic implements ColonyFieldLogicInterface{
+public class ColonyFieldLogicImpl implements ColonyFieldLogic {
     private Colony colony;
 
-    public ColonyFieldLogic() {
+    public ColonyFieldLogicImpl() {
     }
 
-    public ColonyFieldLogic(int m, int n) {
+    public ColonyFieldLogicImpl(int m, int n) {
         colony = new Colony(m, n);
     }
 
@@ -60,6 +60,7 @@ public class ColonyFieldLogic implements ColonyFieldLogicInterface{
     public void fillColony(int maxCoord, Pair<Integer, Integer> cellSize, int cellQty) {
         Random r = new Random();
         int qty = r.nextInt(cellQty);
+        //int qty = cellQty / 10;
         for (int i = 0; i < qty; i++) {
             Pair<Integer, Integer> coord = getRandomCoord(maxCoord);
             createBacterium(coord, cellSize);
@@ -83,9 +84,7 @@ public class ColonyFieldLogic implements ColonyFieldLogicInterface{
                                 , column * cellSize.getValue());
                     }
                 } else {
-                    if (neighboursQty < 2 || neighboursQty > 4) {
-                        colonyCopy.clearCell(row, column);
-                    } else {
+                    if (!(neighboursQty < 2 || neighboursQty > 4)) {
                         colonyCopy.createBacterium(row, column, row * cellSize.getKey()
                                 , column * cellSize.getValue());
                     }

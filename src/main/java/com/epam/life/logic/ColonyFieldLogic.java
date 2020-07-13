@@ -1,9 +1,9 @@
-package com.epam.logic;
+package com.epam.life.logic;
 
-import com.epam.models.Bacterium;
-import com.epam.models.Pair;
+import com.epam.life.models.Bacterium;
+import com.epam.life.models.Pair;
 
-public interface ColonyFieldLogicInterface {
+public interface ColonyFieldLogic {
 
     Bacterium getBacterium(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize);
 

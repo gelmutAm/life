@@ -1,4 +1,4 @@
-package com.epam.models;
+package com.epam.life.models;
 
 public class Bacterium {
     private Integer x;

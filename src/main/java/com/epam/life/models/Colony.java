@@ -1,9 +1,10 @@
-package com.epam.models;
+package com.epam.life.models;
 
 public class Colony {
-    private Bacterium[][] colony;
     private static Integer m;
     private static Integer n;
+
+    private Bacterium[][] colony;
 
     public Colony() {
     }
@@ -86,12 +87,16 @@ public class Colony {
         }
         if (bottomBound + 2 <= m) {
             bottomBound += 2;
+        } else {
+            bottomBound += 1;
         }
         if (leftBound - 1 > -1) {
             leftBound -= 1;
         }
         if (rightBound + 2 <= n) {
             rightBound += 2;
+        } else {
+            rightBound += 1;
         }
 
         int qty = 0;
