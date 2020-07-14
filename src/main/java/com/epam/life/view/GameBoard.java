@@ -76,7 +76,7 @@ public class GameBoard extends JPanel {
                             interruptedException.printStackTrace();
                         }
                         colonyField.repaint();
-                        if ((!colonyField.changed()) || colonyField.isEmpty()) {
+                        if (!colonyField.changed()) {
                             enableBtns();
                         }
                         try {

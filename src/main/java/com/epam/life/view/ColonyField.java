@@ -64,10 +64,6 @@ public class ColonyField extends JPanel {
         return colonyFieldLogic.isColonyChanged();
     }
 
-    public boolean isEmpty() {
-        return colonyFieldLogic.colonyIsEmpty();
-    }
-
     private void drawBacterium(Graphics g, int x, int y, int width, int heigth) {
         g.setColor(Color.BLUE);
         g.fillOval(x, y, width, heigth);

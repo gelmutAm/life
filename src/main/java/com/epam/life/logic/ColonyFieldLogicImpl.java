@@ -1,5 +1,6 @@
 package com.epam.life.logic;
 
+import com.epam.life.common.CommonMethods;
 import com.epam.life.models.Bacterium;
 import com.epam.life.models.Colony;
 import com.epam.life.models.Pair;
@@ -118,16 +119,18 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         FutureTask<List<Pair<Integer, Integer>>> cleaning = new FutureTask<>(() -> getBacteriaToClear());
         Thread creator = new Thread(creation);
         Thread cleaner = new Thread(cleaning);
-        creator.start();
-        cleaner.start();
+        CommonMethods.startJoinThread(creator);
+        CommonMethods.startJoinThread(cleaner);
         transformColony(creation.get(), cleaning.get(), cellSize);
     }
 
-    private void transformColony(List<Pair<Integer, Integer>> toCreate
+    private synchronized void transformColony(List<Pair<Integer, Integer>> toCreate
             , List<Pair<Integer, Integer>> toClear
             , Pair<Integer, Integer> cellSize) {
         if (toCreate.size() > 0 || toClear.size() > 0) {
             colonyChanged = true;
+        } else {
+            colonyChanged = false;
         }
 
         for (int i = 0; i < toCreate.size(); i++) {

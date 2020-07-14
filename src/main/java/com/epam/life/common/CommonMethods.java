@@ -16,4 +16,9 @@ public class CommonMethods {
 
         return divisors;
     }
+
+    public static void startJoinThread(Thread thread) throws InterruptedException {
+        thread.start();
+        thread.join();
+    }
 }
