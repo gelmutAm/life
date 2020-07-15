@@ -8,7 +8,8 @@ public class DependencyResolver {
 
     public static ColonyFieldLogic getColonyFieldLogic() {
         if(colonyFieldLogic == null) {
-            colonyFieldLogic = new ColonyFieldLogicImpl(GameConfig.getM(), GameConfig.getN());
+            colonyFieldLogic = new ColonyFieldLogicImpl(GameConfig.getInstance().getColumnQty()
+                    , GameConfig.getInstance().getRowQty());
         }
 
         return colonyFieldLogic;

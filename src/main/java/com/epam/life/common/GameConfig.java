@@ -3,22 +3,22 @@ package com.epam.life.common;
 public class GameConfig {
     public static GameConfig instance;
 
-    private Integer m;
-    private Integer n;
-    private Integer t;
+    private Integer columnQty;
+    private Integer rowQty;
+    private Integer iterationQty;
 
     private GameConfig() {
     }
 
-    private GameConfig(int m, int n, int t) {
-        this.m = m;
-        this.n = n;
-        this.t = t;
+    private GameConfig(int columnQty, int rowQty, int iterationQty) {
+        this.columnQty = columnQty;
+        this.rowQty = rowQty;
+        this.iterationQty = iterationQty;
     }
 
-    public static void createInstance(int m, int n, int t) {
+    public static void createInstance(int columnQty, int rowQty, int iterationQty) {
         if (instance == null) {
-            instance = new GameConfig(m, n, t);
+            instance = new GameConfig(columnQty, rowQty, iterationQty);
         }
     }
 
@@ -26,15 +26,15 @@ public class GameConfig {
         return instance;
     }
 
-    public static Integer getM() {
-        return instance.m;
+    public Integer getColumnQty() {
+        return columnQty;
     }
 
-    public static Integer getN() {
-        return instance.n;
+    public Integer getRowQty() {
+        return rowQty;
     }
 
-    public static Integer getT() {
-        return instance.t;
+    public Integer getIterationQty() {
+        return iterationQty;
     }
 }

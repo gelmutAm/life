@@ -1,6 +1,5 @@
 package com.epam.life.logic;
 
-import com.epam.life.common.CommonMethods;
 import com.epam.life.models.Bacterium;
 import com.epam.life.models.Colony;
 import com.epam.life.models.Pair;
@@ -19,8 +18,8 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
     public ColonyFieldLogicImpl() {
     }
 
-    public ColonyFieldLogicImpl(int m, int n) {
-        colony = new Colony(m, n);
+    public ColonyFieldLogicImpl(int columnQty, int rowQty) {
+        colony = new Colony(columnQty, rowQty);
     }
 
     private Pair<Integer, Integer> getColonyIndex(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize) {
@@ -36,13 +35,13 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
 
     public void createBacterium(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize) {
         Pair<Integer, Integer> colonyIndex = getColonyIndex(coord, cellSize);
-        int row = colonyIndex.getKey();
-        int column = colonyIndex.getValue();
+        int column = colonyIndex.getKey();
+        int row = colonyIndex.getValue();
 
         if (colony.createBacterium(colonyIndex.getKey(), colonyIndex.getValue())) {
-            Bacterium bacterium = colony.getBacterium(row, column);
-            bacterium.setX(row * cellSize.getKey());
-            bacterium.setY(column * cellSize.getValue());
+            Bacterium bacterium = colony.getBacterium(column, row);
+            bacterium.setX(column * cellSize.getKey());
+            bacterium.setY(row * cellSize.getValue());
         }
     }
 
@@ -80,14 +79,14 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
 
     private List<Pair<Integer, Integer>> getBacteriaToCreate() {
         List<Pair<Integer, Integer>> bacteriaToCreate = new ArrayList<>();
-        for (int row = 0; row < colony.getM(); row++) {
-            for (int column = 0; column < colony.getN(); column++) {
-                Bacterium bacterium = colony.getBacterium(row, column);
-                int neighboursQty = colony.getNeighboursQty(row, column);
+        for (int column = 0; column < colony.getColumnQty(); column++) {
+            for (int row = 0; row < colony.getRowQty(); row++) {
+                Bacterium bacterium = colony.getBacterium(column, row);
+                int neighboursQty = colony.getNeighboursQty(column, row);
 
                 if (bacterium == null) {
                     if (neighboursQty == 3) {
-                        bacteriaToCreate.add(new Pair<>(row, column));
+                        bacteriaToCreate.add(new Pair<>(column, row));
                     }
                 }
             }
@@ -98,14 +97,14 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
 
     private List<Pair<Integer, Integer>> getBacteriaToClear() {
         List<Pair<Integer, Integer>> bacteriaToClear = new ArrayList<>();
-        for (int row = 0; row < colony.getM(); row++) {
-            for (int column = 0; column < colony.getN(); column++) {
-                Bacterium bacterium = colony.getBacterium(row, column);
-                int neighboursQty = colony.getNeighboursQty(row, column);
+        for (int column = 0; column < colony.getColumnQty(); column++) {
+            for (int row = 0; row < colony.getRowQty(); row++) {
+                Bacterium bacterium = colony.getBacterium(column, row);
+                int neighboursQty = colony.getNeighboursQty(column, row);
 
                 if (bacterium != null) {
                     if (neighboursQty < 2 || neighboursQty > 4) {
-                        bacteriaToClear.add(new Pair<>(row, column));
+                        bacteriaToClear.add(new Pair<>(column, row));
                     }
                 }
             }
@@ -119,8 +118,8 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         FutureTask<List<Pair<Integer, Integer>>> cleaning = new FutureTask<>(() -> getBacteriaToClear());
         Thread creator = new Thread(creation);
         Thread cleaner = new Thread(cleaning);
-        CommonMethods.startJoinThread(creator);
-        CommonMethods.startJoinThread(cleaner);
+        creator.start();
+        cleaner.start();
         transformColony(creation.get(), cleaning.get(), cellSize);
     }
 
@@ -134,11 +133,10 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         }
 
         for (int i = 0; i < toCreate.size(); i++) {
-            int row = toCreate.get(i).getKey();
-            int column = toCreate.get(i).getValue();
-            colony.createBacterium(row, column, row * cellSize.getKey(), column * cellSize.getValue());
+            int column = toCreate.get(i).getKey();
+            int row = toCreate.get(i).getValue();
+            colony.createBacterium(column, row, column * cellSize.getKey(), row * cellSize.getValue());
         }
-
         for (int i = 0; i < toClear.size(); i++) {
             colony.clearCell(toClear.get(i).getKey(), toClear.get(i).getValue());
         }

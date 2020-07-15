@@ -67,19 +67,21 @@ public class GameBoard extends JPanel {
                 colonyField.repaint();
 
                 Thread manager = new Thread(() -> {
-                    for (int i = 0; i < GameConfig.getT() && isRunning; i++) {
+                    for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
                         try {
                             colonyField.modifyColony();
-                        } catch (ExecutionException executionException) {
+                        } catch (ExecutionException | InterruptedException executionException) {
                             executionException.printStackTrace();
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
                         }
+
                         colonyField.repaint();
+
                         if (!colonyField.changed()) {
                             enableBtns();
                         }
+
                         try {
+                            //to draw each iteration
                             Thread.sleep(1_000);
                         } catch (InterruptedException interruptedException) {
                             interruptedException.printStackTrace();

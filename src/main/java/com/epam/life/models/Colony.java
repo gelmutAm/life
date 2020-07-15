@@ -1,68 +1,68 @@
 package com.epam.life.models;
 
 public class Colony {
-    private static Integer m;
-    private static Integer n;
+    private Integer columnQty;
+    private Integer rowQty;
 
     private Bacterium[][] colony;
 
     public Colony() {
     }
 
-    public Colony(int m, int n) {
-        colony = new Bacterium[m][n];
-        this.m = m;
-        this.n = n;
+    public Colony(int columnQty, int rowQty) {
+        colony = new Bacterium[columnQty][rowQty];
+        this.columnQty = columnQty;
+        this.rowQty = rowQty;
     }
 
-    public int getM() {
-        return m;
+    public int getColumnQty() {
+        return columnQty;
     }
 
-    public int getN() {
-        return n;
+    public int getRowQty() {
+        return rowQty;
     }
 
-    public Bacterium getBacterium(int row, int column) {
-        return colony[row][column];
+    public Bacterium getBacterium(int column, int row) {
+        return colony[column][row];
     }
 
-    public boolean createBacterium(int row, int column) {
-        if (colony[row][column] == null) {
-            colony[row][column] = new Bacterium();
+    public boolean createBacterium(int column, int row) {
+        if (colony[column][row] == null) {
+            colony[column][row] = new Bacterium();
             return true;
         }
 
         return false;
     }
 
-    public boolean createBacterium(int row, int column, int x, int y) {
-        if (colony[row][column] == null) {
-            colony[row][column] = new Bacterium();
-            colony[row][column].setX(x);
-            colony[row][column].setY(y);
+    public boolean createBacterium(int column, int row, int x, int y) {
+        if (colony[column][row] == null) {
+            colony[column][row] = new Bacterium();
+            colony[column][row].setX(x);
+            colony[column][row].setY(y);
             return true;
         }
 
         return false;
     }
 
-    public void clearCell(int row, int column) {
-        colony[row][column] = null;
+    public void clearCell(int column, int row) {
+        colony[column][row] = null;
     }
 
     public void clear() {
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        for (int i = 0; i < columnQty; i++) {
+            for (int j = 0; j < rowQty; j++) {
                 clearCell(i, j);
             }
         }
     }
 
     public boolean isEmpty() {
-        int qty = m * n;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
+        int qty = columnQty * rowQty;
+        for (int i = 0; i < columnQty; i++) {
+            for (int j = 0; j < rowQty; j++) {
                 if(colony[i][j] == null) {
                     qty--;
                 }
@@ -76,7 +76,7 @@ public class Colony {
         return false;
     }
 
-    public int getNeighboursQty(int row, int column) {
+    public int getNeighboursQty(int column, int row) {
         int topBound = row;
         int bottomBound = row;
         int leftBound = column;
@@ -85,7 +85,7 @@ public class Colony {
         if (topBound - 1 > -1) {
             topBound -= 1;
         }
-        if (bottomBound + 2 <= m) {
+        if (bottomBound + 2 <= rowQty) {
             bottomBound += 2;
         } else {
             bottomBound += 1;
@@ -93,16 +93,16 @@ public class Colony {
         if (leftBound - 1 > -1) {
             leftBound -= 1;
         }
-        if (rightBound + 2 <= n) {
+        if (rightBound + 2 <= columnQty) {
             rightBound += 2;
         } else {
             rightBound += 1;
         }
 
         int qty = 0;
-        for (int i = topBound; i < bottomBound; i++) {
-            for (int j = leftBound; j < rightBound; j++) {
-                if (!(i == row && j == column) && colony[i][j] != null) {
+        for (int i = leftBound; i < rightBound; i++) {
+            for (int j = topBound; j < bottomBound; j++) {
+                if (!(i == column && j == row) && colony[i][j] != null) {
                     qty++;
                 }
             }

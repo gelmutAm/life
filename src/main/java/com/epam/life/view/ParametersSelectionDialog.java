@@ -1,22 +1,23 @@
 package com.epam.life.view;
 
-import com.epam.life.common.CommonMethods;
+import com.epam.life.common.GameUtils;
 import com.epam.life.common.GameConfig;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.util.Collection;
 import java.util.Vector;
 
 public class ParametersSelectionDialog extends JDialog {
     private Button okBtn;
-    JComboBox<Integer> mComboBox;
-    JComboBox<Integer> nComboBox;
-    JComboBox<Integer> tComboBox;
+    private JComboBox<Integer> mComboBox;
+    private JComboBox<Integer> nComboBox;
+    private JComboBox<Integer> tComboBox;
 
-    Integer m = 2;
-    Integer n = 2;
-    Integer t = 2;
+    private int m = 2;
+    private int n = 2;
+    private int t = 2;
 
     private boolean isPressed = false;
 
@@ -50,13 +51,13 @@ public class ParametersSelectionDialog extends JDialog {
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
         okBtn = new Button("Ok");
-        Vector<Integer> divisors = CommonMethods.getDivisors(ColonyField.SIZE);
-        mComboBox = new JComboBox<>(divisors);
-        nComboBox = new JComboBox<>(divisors);
-        tComboBox = new JComboBox<>(divisors);
-        Label mLable = new Label("M:");
-        Label nLable = new Label("N:");
-        Label tLable = new Label("T:");
+        Collection<Integer> divisors = GameUtils.getDivisors(ColonyField.SIZE);
+        mComboBox = new JComboBox<>((Vector<Integer>) divisors);
+        nComboBox = new JComboBox<>((Vector<Integer>) divisors);
+        tComboBox = new JComboBox<>((Vector<Integer>) divisors);
+        Label mLable = new Label("Columns:");
+        Label nLable = new Label("Rows:");
+        Label tLable = new Label("Iterations:");
 
         JPanel comboBoxPanel = new JPanel();
         comboBoxPanel.setLayout(new BoxLayout(comboBoxPanel, BoxLayout.PAGE_AXIS));
@@ -73,7 +74,7 @@ public class ParametersSelectionDialog extends JDialog {
         return panel;
     }
 
-    private JPanel getComboBoxPane(Label label, JComboBox<? extends Object> comboBox) {
+    private JPanel getComboBoxPane(Label label, JComboBox<Integer> comboBox) {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout(FlowLayout.LEFT));
         panel.add(label);

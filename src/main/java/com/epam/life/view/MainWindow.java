@@ -2,13 +2,11 @@ package com.epam.life.view;
 
 import javax.swing.*;
 
-public class MainWindow extends JFrame {
+public class MainWindow {
     private static MainWindow instance;
 
-    private GameBoard gameBoard;
-
     private MainWindow() {
-        this.gameBoard = new GameBoard();
+        GameBoard gameBoard = new GameBoard();
         getMainWindowStyle().add(gameBoard);
     }
 

@@ -23,8 +23,8 @@ public class ColonyField extends JPanel {
 
     public ColonyField() {
         colonyFieldLogic = DependencyResolver.getColonyFieldLogic();
-        cellSize = new Pair<>(SIZE / GameConfig.getM(), SIZE / GameConfig.getN());
-        cellQty = GameConfig.getM() * GameConfig.getN();
+        cellSize = new Pair<>(SIZE / GameConfig.getInstance().getColumnQty(), SIZE / GameConfig.getInstance().getRowQty());
+        cellQty = GameConfig.getInstance().getColumnQty() * GameConfig.getInstance().getRowQty();
         setColonyFieldStyle();
     }
 
