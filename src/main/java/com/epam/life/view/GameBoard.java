@@ -1,6 +1,7 @@
 package com.epam.life.view;
 
 import com.epam.life.common.GameConfig;
+import com.epam.life.models.Pair;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +11,10 @@ import java.awt.event.MouseListener;
 import java.util.concurrent.ExecutionException;
 
 public class GameBoard extends JPanel {
+    private static final int SPACE_BETWEEN_COMPONENTS = 10;
+    private static final double WIDTH_INCREASE = 1.7;
+    private static final double HEIGHT_INCREASE = 1.3;
+
     private ColonyField colonyField;
 
     private Button startBtn;
@@ -126,7 +131,7 @@ public class GameBoard extends JPanel {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
         panel.add(colonyField);
-        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(Box.createRigidArea(new Dimension(0, SPACE_BETWEEN_COMPONENTS)));
         panel.add(buttonsPane);
 
         return panel;
@@ -145,5 +150,10 @@ public class GameBoard extends JPanel {
         startBtn.setEnabled(true);
         clearBtn.setEnabled(true);
     }
-}
 
+    public Pair<Integer, Integer> getWindowSize() {
+        int width = (int) (colonyField.getFieldSize().getKey() * WIDTH_INCREASE);
+        int height = (int) (colonyField.getFieldSize().getValue() * HEIGHT_INCREASE);
+        return new Pair<>(width, height);
+    }
+}

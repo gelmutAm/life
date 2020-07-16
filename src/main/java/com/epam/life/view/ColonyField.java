@@ -12,9 +12,12 @@ import java.awt.*;
 import java.util.concurrent.ExecutionException;
 
 public class ColonyField extends JPanel {
-    public static final Integer SIZE = 280;
-    private static final Integer MIN_COORD = 0;
-    private static final Integer MAX_COORD = SIZE;
+    private static final int WIDTH = 280;
+    private static final int HEIGHT = 280;
+
+    private Pair<Integer, Integer> size = new Pair<>(WIDTH, HEIGHT);
+    private int minCoord = 0;
+    private Pair<Integer, Integer> maxCoord;
 
     private static Pair<Integer, Integer> cellSize;
     private static Integer cellQty;
@@ -23,20 +26,39 @@ public class ColonyField extends JPanel {
 
     public ColonyField() {
         colonyFieldLogic = DependencyResolver.getColonyFieldLogic();
-        cellSize = new Pair<>(SIZE / GameConfig.getInstance().getColumnQty(), SIZE / GameConfig.getInstance().getRowQty());
-        cellQty = GameConfig.getInstance().getColumnQty() * GameConfig.getInstance().getRowQty();
+        int columnQty = GameConfig.getInstance().getColumnQty();
+        int rowQty = GameConfig.getInstance().getRowQty();
+        cellQty = columnQty * rowQty;
+        cellSize = new Pair<>(size.getKey() / columnQty, size.getValue() / rowQty);
+        setAppropriateSize(columnQty, rowQty);
+        maxCoord = new Pair<>(size.getKey(), size.getValue());
         setColonyFieldStyle();
     }
 
+    private void setAppropriateSize(int columnQty, int rowQty) {
+        if (size.getKey() % columnQty != 0 || size.getValue() % rowQty != 0) {
+            if (cellSize.getKey() * columnQty < size.getKey() || cellSize.getValue() * rowQty < size.getValue()) {
+                cellSize.setKey(cellSize.getKey() + 1);
+                cellSize.setValue(cellSize.getValue() + 1);
+                size.setKey(cellSize.getKey() * columnQty);
+                size.setValue(cellSize.getValue() * rowQty);
+            }
+        }
+    }
+
     private void setColonyFieldStyle() {
-        setPreferredSize(new Dimension(SIZE, SIZE));
+        setPreferredSize(new Dimension(size.getKey(), size.getValue()));
         setBackground(Color.WHITE);
         setBorder(BorderFactory.createLineBorder(Color.GRAY));
     }
 
+    public Pair<Integer, Integer> getFieldSize() {
+        return size;
+    }
+
     public void fillColony() {
         if(colonyFieldLogic.colonyIsEmpty()) {
-            colonyFieldLogic.fillColony(MAX_COORD, cellSize, cellQty);
+            colonyFieldLogic.fillColony(maxCoord, cellSize, cellQty);
         }
     }
 
@@ -70,8 +92,8 @@ public class ColonyField extends JPanel {
     }
 
     private void drawColony(Graphics g) {
-        for (int i = MIN_COORD; i < MAX_COORD; i += cellSize.getKey()) {
-            for (int j = MIN_COORD; j < MAX_COORD; j += cellSize.getValue()) {
+        for (int i = minCoord; i < maxCoord.getKey(); i += cellSize.getKey()) {
+            for (int j = minCoord; j < maxCoord.getValue(); j += cellSize.getValue()) {
                 Bacterium bacterium = colonyFieldLogic.getBacterium(new Pair<>(i, j), cellSize);
                 if (bacterium != null) {
                     drawBacterium(g, bacterium.getX(), bacterium.getY(), cellSize.getKey(), cellSize.getValue());

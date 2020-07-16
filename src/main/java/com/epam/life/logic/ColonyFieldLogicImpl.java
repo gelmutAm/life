@@ -11,6 +11,10 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
 public class ColonyFieldLogicImpl implements ColonyFieldLogic {
+    private static final int NEIGHBOURS_QTY_TO_CREATE = 3;
+    private static final int MIN_NEIGHBOURS_QTY_TO_CLEAR = 2;
+    private static final int MAX_NEIGHBOURS_QTY_TO_CLEAR = 4;
+
     private Colony colony;
 
     private boolean colonyChanged = false;
@@ -54,19 +58,18 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         colony.clear();
     }
 
-    private Pair<Integer, Integer> getRandomCoord(int maxCoord) {
+    private Pair<Integer, Integer> getRandomCoord(Pair<Integer, Integer> maxCoord) {
         Pair<Integer, Integer> coord = new Pair<>();
         Random r = new Random();
-        coord.setKey(r.nextInt(maxCoord));
-        coord.setValue(r.nextInt(maxCoord));
+        coord.setKey(r.nextInt(maxCoord.getKey()));
+        coord.setValue(r.nextInt(maxCoord.getValue()));
 
         return coord;
     }
 
-    public void fillColony(int maxCoord, Pair<Integer, Integer> cellSize, int cellQty) {
+    public void fillColony(Pair<Integer, Integer> maxCoord, Pair<Integer, Integer> cellSize, int cellQty) {
         Random r = new Random();
         int qty = r.nextInt(cellQty);
-        //int qty = cellQty / 10;
         for (int i = 0; i < qty; i++) {
             Pair<Integer, Integer> coord = getRandomCoord(maxCoord);
             createBacterium(coord, cellSize);
@@ -85,7 +88,7 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
                 int neighboursQty = colony.getNeighboursQty(column, row);
 
                 if (bacterium == null) {
-                    if (neighboursQty == 3) {
+                    if (neighboursQty == NEIGHBOURS_QTY_TO_CREATE) {
                         bacteriaToCreate.add(new Pair<>(column, row));
                     }
                 }
@@ -103,7 +106,7 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
                 int neighboursQty = colony.getNeighboursQty(column, row);
 
                 if (bacterium != null) {
-                    if (neighboursQty < 2 || neighboursQty > 4) {
+                    if (neighboursQty < MIN_NEIGHBOURS_QTY_TO_CLEAR || neighboursQty > MAX_NEIGHBOURS_QTY_TO_CLEAR) {
                         bacteriaToClear.add(new Pair<>(column, row));
                     }
                 }
