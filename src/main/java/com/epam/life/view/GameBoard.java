@@ -75,8 +75,8 @@ public class GameBoard extends JPanel {
                     for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
                         try {
                             colonyField.modifyColony();
-                        } catch (ExecutionException | InterruptedException executionException) {
-                            executionException.printStackTrace();
+                        } catch (ExecutionException | InterruptedException exception) {
+                            exception.printStackTrace();
                         }
 
                         colonyField.repaint();
