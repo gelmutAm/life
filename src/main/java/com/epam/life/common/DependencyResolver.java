@@ -7,11 +7,15 @@ public class DependencyResolver {
     private static ColonyFieldLogic colonyFieldLogic;
 
     public static ColonyFieldLogic getColonyFieldLogic() {
-        if(colonyFieldLogic == null) {
-            colonyFieldLogic = new ColonyFieldLogicImpl(GameConfig.getInstance().getColumnQty()
-                    , GameConfig.getInstance().getRowQty());
+        if (colonyFieldLogic == null) {
+            colonyFieldLogic = new ColonyFieldLogicImpl(GameConfig.getInstance().getColumnQty(),
+                    GameConfig.getInstance().getRowQty());
         }
 
         return colonyFieldLogic;
+    }
+
+    public static void setColonyFieldLogicToNull() {
+        colonyFieldLogic = null;
     }
 }

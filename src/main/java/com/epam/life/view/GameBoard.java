@@ -10,150 +10,148 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * <code>GameBoard</code>
+ */
 public class GameBoard extends JPanel {
-    private static final int SPACE_BETWEEN_COMPONENTS = 10;
-    private static final double WIDTH_INCREASE = 1.7;
-    private static final double HEIGHT_INCREASE = 1.3;
+    private static final int SPACE_BETWEEN_COMPONENTS = 5;
 
     private ColonyField colonyField;
 
-    private Button startBtn;
-    private Button stopBtn;
-    private Button clearBtn;
+    private Button startButton;
+    private Button stopButton;
+    private Button clearButton;
 
     private volatile boolean isRunning = false;
 
+    /**
+     * Constructs a game board.
+     */
     public GameBoard() {
-        ParametersSelectionDialog parametersSelectionDialog = new ParametersSelectionDialog();
-        if(parametersSelectionDialog.getIsPressed()) {
-            colonyField = new ColonyField();
-            add(getComponentsTogether(colonyField, getButtonsPane()), BorderLayout.CENTER);
+        colonyField = new ColonyField();
+        add(getComponentsTogether(colonyField, getButtonsPane()));
 
-            colonyField.addMouseListener(new MouseListener() {
-                @Override
-                public void mouseClicked(MouseEvent e) {
-                    if (!isRunning) {
-                        int x = e.getX();
-                        int y = e.getY();
-                        if (!colonyField.bacteriumExists(x, y)) {
-                            colonyField.createBacterium(x, y);
-                        } else {
-                            colonyField.clearCell(x, y);
-                        }
+        colonyField.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!isRunning) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    if (!colonyField.bacteriumExists(x, y)) {
+                        colonyField.createBacterium(x, y);
+                    } else {
+                        colonyField.clearCell(x, y);
+                    }
 
-                        colonyField.repaint();
+                    colonyField.repaint();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
+        startButton.addActionListener((ActionEvent e) -> {
+            disableButtons();
+            colonyField.fillColony();
+            colonyField.repaint();
+
+            Thread manager = new Thread(() -> {
+                for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
+                    try {
+                        colonyField.modifyColony();
+                    } catch (ExecutionException | InterruptedException exception) {
+                        exception.printStackTrace();
+                    }
+
+                    colonyField.repaint();
+
+                    if (!colonyField.changed()) {
+                        enableButtons();
+                    }
+
+                    try {
+                        //to draw each iteration
+                        Thread.sleep(1_000);
+                    } catch (InterruptedException interruptedException) {
+                        interruptedException.printStackTrace();
                     }
                 }
 
-                @Override
-                public void mousePressed(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseReleased(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseEntered(MouseEvent e) {
-
-                }
-
-                @Override
-                public void mouseExited(MouseEvent e) {
-
-                }
+                enableButtons();
             });
 
-            startBtn.addActionListener((ActionEvent e) -> {
-                disableBtns();
-                colonyField.fillColony();
-                colonyField.repaint();
+            manager.start();
+        });
 
-                Thread manager = new Thread(() -> {
-                    for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
-                        try {
-                            colonyField.modifyColony();
-                        } catch (ExecutionException | InterruptedException exception) {
-                            exception.printStackTrace();
-                        }
+        stopButton.addActionListener((ActionEvent e) -> {
+            enableButtons();
+        });
 
-                        colonyField.repaint();
-
-                        if (!colonyField.changed()) {
-                            enableBtns();
-                        }
-
-                        try {
-                            //to draw each iteration
-                            Thread.sleep(1_000);
-                        } catch (InterruptedException interruptedException) {
-                            interruptedException.printStackTrace();
-                        }
-                    }
-
-                    enableBtns();
-                });
-
-                manager.start();
-            });
-
-            stopBtn.addActionListener((ActionEvent e) -> {
-                enableBtns();
-            });
-
-            clearBtn.addActionListener((ActionEvent e) -> {
-                colonyField.clear();
-                colonyField.repaint();
-            });
-        } else {
-            System.exit(0);
-        }
+        clearButton.addActionListener((ActionEvent e) -> {
+            colonyField.clear();
+            colonyField.repaint();
+        });
     }
 
     private JPanel getButtonsPane() {
         JPanel buttonsPane = new JPanel();
         buttonsPane.setLayout(new BoxLayout(buttonsPane, BoxLayout.LINE_AXIS));
 
-        startBtn = new Button("Start");
-        stopBtn = new Button("Stop");
-        clearBtn = new Button("Clear");
+        startButton = new Button("Start");
+        stopButton = new Button("Stop");
+        clearButton = new Button("Clear");
 
-        buttonsPane.add(startBtn);
-        buttonsPane.add(stopBtn);
-        buttonsPane.add(clearBtn);
+        buttonsPane.add(startButton);
+        buttonsPane.add(stopButton);
+        buttonsPane.add(clearButton);
 
         return buttonsPane;
     }
 
-    private JPanel getComponentsTogether(JPanel colonyField, JPanel buttonsPane) {
-        JPanel panel = new JPanel();
-        panel.setLayout(new BoxLayout(panel, BoxLayout.PAGE_AXIS));
-        panel.add(colonyField);
-        panel.add(Box.createRigidArea(new Dimension(0, SPACE_BETWEEN_COMPONENTS)));
-        panel.add(buttonsPane);
+    private JPanel getComponentsTogether(JPanel... panels) {
+        JPanel resultPane = new JPanel();
+        resultPane.setLayout(new BoxLayout(resultPane, BoxLayout.PAGE_AXIS));
+        for (JPanel item : panels) {
+            resultPane.add(Box.createRigidArea(new Dimension(0, SPACE_BETWEEN_COMPONENTS)));
+            resultPane.add(item);
+        }
 
-        return panel;
+        return resultPane;
     }
 
-    private void disableBtns() {
+    private void disableButtons() {
         isRunning = true;
-        startBtn.setLabel("Running");
-        startBtn.setEnabled(false);
-        clearBtn.setEnabled(false);
+        startButton.setLabel("Running");
+        startButton.setEnabled(false);
+        clearButton.setEnabled(false);
     }
 
-    private void enableBtns() {
+    private void enableButtons() {
         isRunning = false;
-        startBtn.setLabel("Start");
-        startBtn.setEnabled(true);
-        clearBtn.setEnabled(true);
+        startButton.setLabel("Start");
+        startButton.setEnabled(true);
+        clearButton.setEnabled(true);
     }
 
-    public Pair<Integer, Integer> getWindowSize() {
-        int width = (int) (colonyField.getFieldSize().getKey() * WIDTH_INCREASE);
-        int height = (int) (colonyField.getFieldSize().getValue() * HEIGHT_INCREASE);
-        return new Pair<>(width, height);
+    public Pair<Integer, Integer> getColonyFieldSize() {
+        return colonyField.getFieldSize();
     }
 }

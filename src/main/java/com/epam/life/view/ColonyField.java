@@ -11,6 +11,9 @@ import java.awt.*;
 
 import java.util.concurrent.ExecutionException;
 
+/**
+ * <code>ColonyField</code> represents a bacterial colony.
+ */
 public class ColonyField extends JPanel {
     private static final int WIDTH = 280;
     private static final int HEIGHT = 280;
@@ -20,10 +23,13 @@ public class ColonyField extends JPanel {
     private Pair<Integer, Integer> maxCoord;
 
     private static Pair<Integer, Integer> cellSize;
-    private static Integer cellQty;
+    private static int cellQty;
 
     private ColonyFieldLogic colonyFieldLogic;
 
+    /**
+     * Constructs an empty colony field.
+     */
     public ColonyField() {
         colonyFieldLogic = DependencyResolver.getColonyFieldLogic();
         int columnQty = GameConfig.getInstance().getColumnQty();
@@ -56,32 +62,68 @@ public class ColonyField extends JPanel {
         return size;
     }
 
+    /**
+     * Randomly fills this colony field.
+     */
     public void fillColony() {
-        if(colonyFieldLogic.colonyIsEmpty()) {
+        if (colonyFieldLogic.colonyIsEmpty()) {
             colonyFieldLogic.fillColony(maxCoord, cellSize, cellQty);
         }
     }
 
+    /**
+     * Clears this colony field.
+     */
     public void clear() {
         colonyFieldLogic.clearColony();
     }
 
+    /**
+     * Creates the bacterium with specified coordinates in this colony field.
+     *
+     * @param x x-coordinate of the bacterium which is to be created
+     * @param y y-coordinate of the bacterium which is to be created
+     */
     public void createBacterium(int x, int y) {
         colonyFieldLogic.createBacterium(new Pair<>(x, y), cellSize);
     }
 
+    /**
+     * Returns {@code true} if the bacterium with specified coordinates exists on this colony field.
+     *
+     * @param x x-coordinate of the bacterium
+     * @param y y-coordinate of the bacterium
+     * @return {@code true} if the bacterium with specified coordinate exists on this colony field.
+     */
     public boolean bacteriumExists(int x, int y) {
         return colonyFieldLogic.getBacterium(new Pair<>(x, y), cellSize) != null;
     }
 
+    /**
+     * Removes the bacterium with specified coordinates from this colony field.
+     *
+     * @param x x-coordinate of the bacterium which is to be removed
+     * @param y y-coordinate of the bacterium which is to be removed
+     */
     public void clearCell(int x, int y) {
         colonyFieldLogic.clearCell(new Pair<>(x, y), cellSize);
     }
 
+    /**
+     * Modifies this colony field.
+     *
+     * @throws ExecutionException
+     * @throws InterruptedException
+     */
     public void modifyColony() throws ExecutionException, InterruptedException {
         colonyFieldLogic.modifyColony(cellSize);
     }
 
+    /**
+     * Returns {@code true} if this colony field has changed.
+     *
+     * @return {@code true} if this colony field has changed.
+     */
     public boolean changed() {
         return colonyFieldLogic.isColonyChanged();
     }

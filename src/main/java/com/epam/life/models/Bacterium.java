@@ -1,8 +1,8 @@
 package com.epam.life.models;
 
 public class Bacterium {
-    private Integer x;
-    private Integer y;
+    private int x;
+    private int y;
 
     public Bacterium() {
     }
@@ -11,7 +11,7 @@ public class Bacterium {
         return x;
     }
 
-    public void setX(Integer x) {
+    public void setX(int x) {
         this.x = x;
     }
 
@@ -19,7 +19,7 @@ public class Bacterium {
         return y;
     }
 
-    public void setY(Integer y) {
+    public void setY(int y) {
         this.y = y;
     }
 }

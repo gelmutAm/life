@@ -1,11 +1,14 @@
 package com.epam.life.common;
 
+/**
+ * <code>GameConfig</code> stores game settings.
+ */
 public class GameConfig {
     public static GameConfig instance;
 
-    private Integer columnQty;
-    private Integer rowQty;
-    private Integer iterationQty;
+    private int columnQty;
+    private int rowQty;
+    private int iterationQty;
 
     private GameConfig() {
     }
@@ -16,6 +19,13 @@ public class GameConfig {
         this.iterationQty = iterationQty;
     }
 
+    /**
+     * Creates {@code GameConfig} with specified parameters.
+     *
+     * @param columnQty    number of columns in colony
+     * @param rowQty       number of rows in colony
+     * @param iterationQty number of game iterations
+     */
     public static void createInstance(int columnQty, int rowQty, int iterationQty) {
         if (instance == null) {
             instance = new GameConfig(columnQty, rowQty, iterationQty);
@@ -26,15 +36,19 @@ public class GameConfig {
         return instance;
     }
 
-    public Integer getColumnQty() {
+    public static void setInstanceToNull() {
+        instance = null;
+    }
+
+    public int getColumnQty() {
         return columnQty;
     }
 
-    public Integer getRowQty() {
+    public int getRowQty() {
         return rowQty;
     }
 
-    public Integer getIterationQty() {
+    public int getIterationQty() {
         return iterationQty;
     }
 }

@@ -1,7 +1,5 @@
 package com.epam.life.models;
 
-import java.util.List;
-
 public class Pair<T, V> {
     private T key;
     private V value;

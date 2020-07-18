@@ -9,7 +9,8 @@ public interface ColonyFieldLogic {
 
     /**
      * Returns the bacterium at the specified position in this colony.
-     * @param coord coordinate of the bacterium to return
+     *
+     * @param coord    coordinate of the bacterium to return
      * @param cellSize size of colony field cell
      * @return the bacterium at the specified position in this colony.
      */
@@ -17,14 +18,16 @@ public interface ColonyFieldLogic {
 
     /**
      * Inserts the bacterium at the specified position in this colony.
-     * @param coord coordinate at which the bacterium is to be inserted
+     *
+     * @param coord    coordinate at which the bacterium is to be inserted
      * @param cellSize size of colony field cell
      */
     void createBacterium(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize);
 
     /**
      * Removes the bacterium at the specified position in this colony.
-     * @param coord coordinate of the bacterium to be removed
+     *
+     * @param coord    coordinate of the bacterium to be removed
      * @param cellSize size of colony field cell
      */
     void clearCell(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize);
@@ -36,9 +39,10 @@ public interface ColonyFieldLogic {
 
     /**
      * Fills this colony with random coordinates bacteria.
+     *
      * @param maxCoord max coordinate of the colony field
      * @param cellSize size of colony field cell
-     * @param cellQty number of colony field cells
+     * @param cellQty  number of colony field cells
      */
     void fillColony(Pair<Integer, Integer> maxCoord, Pair<Integer, Integer> cellSize, int cellQty);
 
@@ -51,6 +55,7 @@ public interface ColonyFieldLogic {
 
     /**
      * Modifies this colony.
+     *
      * @param cellSize size of colony field cell
      * @throws ExecutionException
      * @throws InterruptedException

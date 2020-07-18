@@ -1,15 +1,36 @@
 package com.epam.life.view;
 
-import javax.swing.*;
+import com.epam.life.models.Pair;
 
-public class MainWindow {
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+
+/**
+ * <code>MainWindow</code> is a main window of the game.
+ */
+public class MainWindow extends JFrame {
+    private static final double WIDTH_MAGNIFICATION_FACTOR = 1.1;
+    private static final double HEIGHT_MAGNIFICATION_FACTOR = 120;
+
     private static MainWindow instance;
 
     private GameBoard gameBoard;
 
     private MainWindow() {
         this.gameBoard = new GameBoard();
-        getMainWindowStyle().add(gameBoard);
+        Button menuButton = new Button("Settings");
+
+        menuButton.addActionListener((ActionEvent e) -> {
+            this.dispose();
+            instance = null;
+            ParametersSelectionDialog.getInstance().setVisible(true);
+        });
+
+        gameBoard.add(menuButton);
+        add(gameBoard);
+
+        setMainWindowStyle();
     }
 
     public static MainWindow getInstance() {
@@ -20,19 +41,19 @@ public class MainWindow {
         return instance;
     }
 
-    private JFrame getMainWindowStyle() {
-        JFrame window = new JFrame();
-        window.setTitle("Life");
-        window.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        window.setSize(gameBoard.getWindowSize().getKey(), gameBoard.getWindowSize().getValue());
-        window.setLocationRelativeTo(null);
-        window.setVisible(true);
-        window.setResizable(false);
-
-        return window;
+    private void setMainWindowStyle() {
+        setTitle("Life");
+        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        setSize(getWindowSize().getKey(), getWindowSize().getValue());
+        setLocationRelativeTo(null);
+        setVisible(true);
+        setResizable(false);
     }
 
-    public static void main(String[] args) {
-        MainWindow.getInstance();
+    private Pair<Integer, Integer> getWindowSize() {
+        Pair<Integer, Integer> size = new Pair<>();
+        size.setKey((int) (gameBoard.getColonyFieldSize().getKey() * WIDTH_MAGNIFICATION_FACTOR));
+        size.setValue((int) (gameBoard.getColonyFieldSize().getValue() + HEIGHT_MAGNIFICATION_FACTOR));
+        return size;
     }
 }
