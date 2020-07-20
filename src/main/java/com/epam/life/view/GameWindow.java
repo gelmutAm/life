@@ -7,35 +7,35 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 
 /**
- * <code>MainWindow</code> is a main window of the game.
+ * <code>GameWindow</code> is a main window of the game.
  */
-public class MainWindow extends JFrame {
+public class GameWindow extends JFrame {
     private static final double WIDTH_MAGNIFICATION_FACTOR = 1.1;
     private static final double HEIGHT_MAGNIFICATION_FACTOR = 120;
 
-    private static MainWindow instance;
+    private static GameWindow instance;
 
     private GameBoard gameBoard;
 
-    private MainWindow() {
+    private GameWindow() {
         this.gameBoard = new GameBoard();
-        Button menuButton = new Button("Settings");
+        Button settingsButton = new Button("Settings");
 
-        menuButton.addActionListener((ActionEvent e) -> {
+        settingsButton.addActionListener((ActionEvent e) -> {
             this.dispose();
             instance = null;
             ParametersSelectionDialog.getInstance().setVisible(true);
         });
 
-        gameBoard.add(menuButton);
+        gameBoard.add(settingsButton);
         add(gameBoard);
 
         setMainWindowStyle();
     }
 
-    public static MainWindow getInstance() {
+    public static GameWindow getInstance() {
         if (instance == null) {
-            instance = new MainWindow();
+            instance = new GameWindow();
         }
 
         return instance;

@@ -18,14 +18,14 @@ public class ColonyField extends JPanel {
     private static final int WIDTH = 280;
     private static final int HEIGHT = 280;
 
-    private Pair<Integer, Integer> size = new Pair<>(WIDTH, HEIGHT);
-    private int minCoord = 0;
-    private Pair<Integer, Integer> maxCoord;
+    private final Pair<Integer, Integer> size = new Pair<>(WIDTH, HEIGHT);
+    private final int minCoord = 0;
+    private final Pair<Integer, Integer> maxCoord;
 
     private static Pair<Integer, Integer> cellSize;
     private static int cellQty;
 
-    private ColonyFieldLogic colonyFieldLogic;
+    private final ColonyFieldLogic colonyFieldLogic;
 
     /**
      * Constructs an empty colony field.
@@ -79,7 +79,7 @@ public class ColonyField extends JPanel {
     }
 
     /**
-     * Creates the bacterium with specified coordinates in this colony field.
+     * Creates the bacterium with the specified coordinates in this colony field.
      *
      * @param x x-coordinate of the bacterium which is to be created
      * @param y y-coordinate of the bacterium which is to be created
@@ -89,18 +89,18 @@ public class ColonyField extends JPanel {
     }
 
     /**
-     * Returns {@code true} if the bacterium with specified coordinates exists on this colony field.
+     * Returns {@code true} if the bacterium with the specified coordinates exists on this colony field.
      *
      * @param x x-coordinate of the bacterium
      * @param y y-coordinate of the bacterium
-     * @return {@code true} if the bacterium with specified coordinate exists on this colony field.
+     * @return {@code true} if the bacterium with the specified coordinates exists on this colony field.
      */
     public boolean bacteriumExists(int x, int y) {
         return colonyFieldLogic.getBacterium(new Pair<>(x, y), cellSize) != null;
     }
 
     /**
-     * Removes the bacterium with specified coordinates from this colony field.
+     * Removes the bacterium with the specified coordinates from this colony field.
      *
      * @param x x-coordinate of the bacterium which is to be removed
      * @param y y-coordinate of the bacterium which is to be removed

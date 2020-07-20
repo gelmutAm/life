@@ -12,7 +12,7 @@ import java.text.NumberFormat;
 import java.text.ParseException;
 
 /**
- * <code>ParametersSelectionDialog</code> is dialog window for game parameters setting.
+ * <code>ParametersSelectionDialog</code> is a dialog window for game settings.
  */
 public class ParametersSelectionDialog extends JFrame {
     private static ParametersSelectionDialog instance;
@@ -59,7 +59,7 @@ public class ParametersSelectionDialog extends JFrame {
             DependencyResolver.setColonyFieldLogicToNull();
             GameConfig.setInstanceToNull();
             GameConfig.createInstance(columnQty, rowQty, iterationQty);
-            MainWindow.getInstance();
+            GameWindow.getInstance();
             setVisible(false);
         });
 

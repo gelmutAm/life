@@ -50,12 +50,6 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         return colony.getBacterium(colonyIndex.getKey(), colonyIndex.getValue());
     }
 
-    /**
-     * Creates the bacterium at the specified coordinate in this colony.
-     *
-     * @param coord    coordinate at which the bacterium is to be inserted
-     * @param cellSize size of colony field cell
-     */
     @Override
     public void createBacterium(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize) {
         Pair<Integer, Integer> colonyIndex = getColonyIndex(coord, cellSize);
@@ -69,21 +63,12 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         }
     }
 
-    /**
-     * Removes the bacterium at the specified position from this colony.
-     *
-     * @param coord    coordinate of the bacterium to be removed
-     * @param cellSize size of colony field cell
-     */
     @Override
     public void clearCell(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize) {
         Pair<Integer, Integer> colonyIndex = getColonyIndex(coord, cellSize);
         colony.clearCell(colonyIndex.getKey(), colonyIndex.getValue());
     }
 
-    /**
-     * Removes all bacteria from this colony.
-     */
     @Override
     public void clearColony() {
         colony.clear();
@@ -98,13 +83,6 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         return coord;
     }
 
-    /**
-     * Fills this colony with random coordinates bacteria.
-     *
-     * @param maxCoord max coordinate of the colony field
-     * @param cellSize size of colony field cell
-     * @param cellQty  number of colony field cells
-     */
     @Override
     public void fillColony(Pair<Integer, Integer> maxCoord, Pair<Integer, Integer> cellSize, int cellQty) {
         Random r = new Random();
@@ -115,11 +93,7 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         }
     }
 
-    /**
-     * Returns {@code true} if this colony contains no bacteria.
-     *
-     * @return {@code true} if this colony contains no bacteria.
-     */
+
     @Override
     public boolean colonyIsEmpty() {
         return colony.isEmpty();
@@ -161,17 +135,10 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         return bacteriaToClear;
     }
 
-    /**
-     * Modifies this colony.
-     *
-     * @param cellSize size of colony field cell
-     * @throws ExecutionException
-     * @throws InterruptedException
-     */
     @Override
     public void modifyColony(Pair<Integer, Integer> cellSize) throws ExecutionException, InterruptedException {
-        FutureTask<List<Pair<Integer, Integer>>> creation = new FutureTask<>(() -> getBacteriaToCreate());
-        FutureTask<List<Pair<Integer, Integer>>> cleaning = new FutureTask<>(() -> getBacteriaToClear());
+        FutureTask<List<Pair<Integer, Integer>>> creation = new FutureTask<>(this::getBacteriaToCreate);
+        FutureTask<List<Pair<Integer, Integer>>> cleaning = new FutureTask<>(this::getBacteriaToClear);
         Thread creator = new Thread(creation);
         Thread cleaner = new Thread(cleaning);
         creator.start();
@@ -194,11 +161,6 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         }
     }
 
-    /**
-     * Returns {@code true} if this colony has changed.
-     *
-     * @return {@code true} if this colony has changed.
-     */
     @Override
     public boolean isColonyChanged() {
         return colonyChanged;
