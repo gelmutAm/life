@@ -16,7 +16,7 @@ import java.util.concurrent.ExecutionException;
 public class GameBoard extends JPanel {
     private static final int SPACE_BETWEEN_COMPONENTS = 5;
 
-    private ColonyField colonyField;
+    private final ColonyField colonyField;
 
     private Button startButton;
     private Button stopButton;
@@ -30,75 +30,13 @@ public class GameBoard extends JPanel {
     public GameBoard() {
         colonyField = new ColonyField();
         add(getComponentsTogether(colonyField, getButtonsPane()));
-
-        colonyField.addMouseListener(new MouseListener() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if (!isRunning) {
-                    int x = e.getX();
-                    int y = e.getY();
-                    if (!colonyField.bacteriumExists(x, y)) {
-                        colonyField.createBacterium(x, y);
-                    } else {
-                        colonyField.clearCell(x, y);
-                    }
-
-                    colonyField.repaint();
-                }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
-            }
-        });
+        setMouseListener(colonyField);
 
         startButton.addActionListener((ActionEvent e) -> {
             disableButtons();
             colonyField.fillColony();
             colonyField.repaint();
-
-            Thread manager = new Thread(() -> {
-                for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
-                    try {
-                        colonyField.modifyColony();
-                    } catch (ExecutionException | InterruptedException exception) {
-                        exception.printStackTrace();
-                    }
-
-                    colonyField.repaint();
-
-                    if (!colonyField.changed()) {
-                        enableButtons();
-                    }
-
-                    try {
-                        //to draw each iteration
-                        Thread.sleep(1_000);
-                    } catch (InterruptedException interruptedException) {
-                        interruptedException.printStackTrace();
-                    }
-                }
-
-                enableButtons();
-            });
-
-            manager.start();
+            startManagerThread();
         });
 
         stopButton.addActionListener((ActionEvent e) -> {
@@ -149,6 +87,74 @@ public class GameBoard extends JPanel {
         startButton.setLabel("Start");
         startButton.setEnabled(true);
         clearButton.setEnabled(true);
+    }
+
+    private void setMouseListener(ColonyField colonyField) {
+        colonyField.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if (!isRunning) {
+                    int x = e.getX();
+                    int y = e.getY();
+                    if (!colonyField.bacteriumExists(x, y)) {
+                        colonyField.createBacterium(x, y);
+                    } else {
+                        colonyField.clearCell(x, y);
+                    }
+
+                    colonyField.repaint();
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+    }
+
+    private void startManagerThread() {
+        Thread manager = new Thread(() -> {
+            for (int i = 0; i < GameConfig.getInstance().getIterationQty() && isRunning; i++) {
+                try {
+                    colonyField.modifyColony();
+                } catch (ExecutionException | InterruptedException exception) {
+                    exception.printStackTrace();
+                }
+
+                colonyField.repaint();
+
+                if (!colonyField.changed()) {
+                    enableButtons();
+                }
+
+                try {
+                    //to draw each iteration
+                    Thread.sleep(1_000);
+                } catch (InterruptedException interruptedException) {
+                    interruptedException.printStackTrace();
+                }
+            }
+
+            enableButtons();
+        });
+
+        manager.start();
     }
 
     public Pair<Integer, Integer> getColonyFieldSize() {

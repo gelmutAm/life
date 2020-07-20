@@ -15,7 +15,7 @@ public class GameWindow extends JFrame {
 
     private static GameWindow instance;
 
-    private GameBoard gameBoard;
+    private final GameBoard gameBoard;
 
     private GameWindow() {
         this.gameBoard = new GameBoard();
