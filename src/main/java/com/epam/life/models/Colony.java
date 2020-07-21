@@ -59,13 +59,17 @@ public class Colony {
      * @param row    row index at which the bacterium is to be created
      * @param x      x-coordinate of the bacterium
      * @param y      y-coordinate of the bacterium
+     * @return {@code true} if the bacterium in this colony is created.
      */
-    public void createBacterium(int column, int row, int x, int y) {
+    public boolean createBacterium(int column, int row, int x, int y) {
         if (colony[column][row] == null) {
             colony[column][row] = new Bacterium();
             colony[column][row].setX(x);
             colony[column][row].setY(y);
+            return true;
         }
+
+        return false;
     }
 
     /**
