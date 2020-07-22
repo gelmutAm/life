@@ -20,7 +20,7 @@ public class GameConfig {
     }
 
     /**
-     * Creates {@code GameConfig} with specified parameters.
+     * Creates {@code GameConfig} with the specified parameters.
      *
      * @param columnQty    number of columns in colony
      * @param rowQty       number of rows in colony

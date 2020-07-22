@@ -39,9 +39,10 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
     }
 
     private Pair<Integer, Integer> getColonyIndex(Pair<Integer, Integer> coord, Pair<Integer, Integer> cellSize) {
-        coord.setKey(coord.getKey() / cellSize.getKey());
-        coord.setValue(coord.getValue() / cellSize.getValue());
-        return coord;
+        Pair<Integer, Integer> colonyIndex = new Pair<>(coord.getKey(), coord.getValue());
+        colonyIndex.setKey(coord.getKey() / cellSize.getKey());
+        colonyIndex.setValue(coord.getValue() / cellSize.getValue());
+        return colonyIndex;
     }
 
     @Override
@@ -136,7 +137,7 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
     }
 
     @Override
-    public void modifyColony(Pair<Integer, Integer> cellSize) throws ExecutionException, InterruptedException {
+    public synchronized void modifyColony(Pair<Integer, Integer> cellSize) throws ExecutionException, InterruptedException {
         FutureTask<List<Pair<Integer, Integer>>> creation = new FutureTask<>(this::getBacteriaToCreate);
         FutureTask<List<Pair<Integer, Integer>>> cleaning = new FutureTask<>(this::getBacteriaToClear);
         Thread creator = new Thread(creation);
@@ -146,7 +147,7 @@ public class ColonyFieldLogicImpl implements ColonyFieldLogic {
         transformColony(creation.get(), cleaning.get(), cellSize);
     }
 
-    private synchronized void transformColony(List<Pair<Integer, Integer>> toCreate
+    private void transformColony(List<Pair<Integer, Integer>> toCreate
             , List<Pair<Integer, Integer>> toClear
             , Pair<Integer, Integer> cellSize) {
         colonyChanged = toCreate.size() > 0 || toClear.size() > 0;

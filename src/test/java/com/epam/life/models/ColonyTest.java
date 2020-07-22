@@ -10,40 +10,36 @@ public class ColonyTest {
     private final Colony colony = new Colony(columnQty, rowQty);
     private final int column = 0;
     private final int row = 0;
-    private final int x = 0;
-    private final int y = 0;
 
     @Test
-    public void testCreateBacterium2args_notExist_true() {
-        assertTrue(colony.createBacterium(column, row));
-    }
-
-    @Test
-    public void testCreateBacterium2args_exists_false() {
+    public void doesNotCreateBacteriumIfExists() {
         colony.createBacterium(column, row);
         assertFalse(colony.createBacterium(column, row));
     }
 
     @Test
-    public void testCreateBacterium4args_notExist_true() {
-        assertTrue(colony.createBacterium(column, row, x, y));
-    }
-
-    @Test
-    public void testCreateBacterium4args_exists_false() {
+    public void doesNotCreateBacteriumWithCoordinatesIfExists() {
+        int x = 0;
+        int y = 0;
+        int newX = 10;
+        int newY = 10;
         colony.createBacterium(column, row, x, y);
-        assertFalse(colony.createBacterium(column, row, x, y));
+        Bacterium bacterium = colony.getBacterium(column, row);
+        colony.createBacterium(column, row, newX, newY);
+        Bacterium newBacterium = colony.getBacterium(column, row);
+        assertEquals(newBacterium.getX(), bacterium.getX());
+        assertEquals(newBacterium.getY(), bacterium.getY());
     }
 
     @Test
-    public void testClearCell() {
+    public void clearsCell() {
         colony.createBacterium(column, row);
         colony.clearCell(column, row);
         assertNull(colony.getBacterium(column, row));
     }
 
     @Test
-    public void testClear() {
+    public void clearsAllColony() {
         colony.createBacterium(column, row);
         colony.clear();
         for (int i = 0; i < colony.getColumnQty(); i++) {
@@ -54,14 +50,66 @@ public class ColonyTest {
     }
 
     @Test
-    public void testIsEmpty() {
-        assertTrue(colony.isEmpty());
+    public void returnsColonyIsNotEmptyIfAnyBacteriaExist() {
         colony.createBacterium(column, row);
         assertFalse(colony.isEmpty());
     }
 
     @Test
-    public void testGetNeighboursQty() {
-        fail();
+    public void getsNeighboursQtyIfBacteriumLocatedAtLeftUpperCorner() {
+        colony.createBacterium(column, row);
+        int neighbourColumn = 1;
+        int neighbourRow = 0;
+        colony.createBacterium(neighbourColumn, neighbourRow);
+        int neighboursQty = 1;
+        assertEquals(neighboursQty, colony.getNeighboursQty(column, row));
+    }
+
+    @Test
+    public void getsNeighboursQtyIfBacteriumLocatedAtLeftLowerCorner() {
+        int column = 0;
+        int row = colony.getRowQty() - 1;
+        colony.createBacterium(column, row);
+        int neighbour1Column = 1;
+        int neighbour1Row = colony.getRowQty() - 2;
+        colony.createBacterium(neighbour1Column, neighbour1Row);
+        int neighbour2Column = 1;
+        int neighbour2Row = colony.getRowQty() - 1;
+        colony.createBacterium(neighbour2Column, neighbour2Row);
+        int neighboursQty = 2;
+        assertEquals(neighboursQty, colony.getNeighboursQty(column, row));
+    }
+
+    @Test
+    public void getsNeighboursQtyIfBacteriumLocatedAtRightUpperCorner() {
+        int column = colony.getColumnQty() - 1;
+        int row = 0;
+        colony.createBacterium(column, row);
+        int neighbourColumn = colony.getColumnQty() - 2;
+        int neighbourRow = 1;
+        colony.createBacterium(neighbourColumn, neighbourRow);
+        int neighboursQty = 1;
+        assertEquals(neighboursQty, colony.getNeighboursQty(column, row));
+    }
+
+    @Test
+    public void getsNeighboursQtyIfBacteriumLocatedAtRightLowerCorner() {
+        int column = colony.getColumnQty() - 1;
+        int row = colony.getRowQty() - 1;
+        colony.createBacterium(column, row);
+        int neighbourColumn = colony.getColumnQty() - 2;
+        int neighbourRow = colony.getRowQty() - 1;
+        colony.createBacterium(neighbourColumn, neighbourRow);
+        int neighboursQty = 1;
+        assertEquals(neighboursQty, colony.getNeighboursQty(column, row));
+    }
+
+    @Test
+    public void getsNeighboursQtyIfBacteriumLocatedAtCenter() {
+        int column = colony.getColumnQty() / 2;
+        int row = colony.getRowQty() / 2;
+        colony.createBacterium(column, row);
+        int neighboursQty = 0;
+        assertEquals(neighboursQty, colony.getNeighboursQty(column, row));
     }
 }

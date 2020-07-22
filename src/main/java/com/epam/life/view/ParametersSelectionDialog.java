@@ -10,7 +10,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
 /**
- * <code>ParametersSelectionDialog</code> is a dialog window for game settings.
+ * <code>ParametersSelectionDialog</code> is a dialog window for a game settings.
  */
 public class ParametersSelectionDialog extends JFrame {
     private static ParametersSelectionDialog instance;
