@@ -12,13 +12,13 @@ public class ColonyTest {
     private final int row = 0;
 
     @Test
-    public void doesNotCreateBacteriumIfExists() {
+    public void testCreateBacterium_IfExists() {
         colony.createBacterium(column, row);
         assertFalse(colony.createBacterium(column, row));
     }
 
     @Test
-    public void doesNotCreateBacteriumWithCoordinatesIfExists() {
+    public void testCreateBacterium_WithCoordinates_IfExists() {
         int x = 0;
         int y = 0;
         int newX = 10;
@@ -32,14 +32,14 @@ public class ColonyTest {
     }
 
     @Test
-    public void clearsCell() {
+    public void testClearCell() {
         colony.createBacterium(column, row);
         colony.clearCell(column, row);
         assertNull(colony.getBacterium(column, row));
     }
 
     @Test
-    public void clearsAllColony() {
+    public void testClearColony() {
         colony.createBacterium(column, row);
         colony.clear();
         for (int i = 0; i < colony.getColumnQty(); i++) {
@@ -50,13 +50,13 @@ public class ColonyTest {
     }
 
     @Test
-    public void returnsColonyIsNotEmptyIfAnyBacteriaExist() {
+    public void testIsEmpty_IfAnyBacteriaExist() {
         colony.createBacterium(column, row);
         assertFalse(colony.isEmpty());
     }
 
     @Test
-    public void getsNeighboursQtyIfBacteriumLocatedAtLeftUpperCorner() {
+    public void testNeighboursQty_IfBacteriumLocatedAtLeftUpperCorner() {
         colony.createBacterium(column, row);
         int neighbourColumn = 1;
         int neighbourRow = 0;
@@ -66,7 +66,7 @@ public class ColonyTest {
     }
 
     @Test
-    public void getsNeighboursQtyIfBacteriumLocatedAtLeftLowerCorner() {
+    public void testNeighboursQty_IfBacteriumLocatedAtLeftLowerCorner() {
         int column = 0;
         int row = colony.getRowQty() - 1;
         colony.createBacterium(column, row);
@@ -81,7 +81,7 @@ public class ColonyTest {
     }
 
     @Test
-    public void getsNeighboursQtyIfBacteriumLocatedAtRightUpperCorner() {
+    public void testNeighboursQty_IfBacteriumLocatedAtRightUpperCorner() {
         int column = colony.getColumnQty() - 1;
         int row = 0;
         colony.createBacterium(column, row);
@@ -93,7 +93,7 @@ public class ColonyTest {
     }
 
     @Test
-    public void getsNeighboursQtyIfBacteriumLocatedAtRightLowerCorner() {
+    public void testNeighboursQty_IfBacteriumLocatedAtRightLowerCorner() {
         int column = colony.getColumnQty() - 1;
         int row = colony.getRowQty() - 1;
         colony.createBacterium(column, row);
@@ -105,7 +105,7 @@ public class ColonyTest {
     }
 
     @Test
-    public void getsNeighboursQtyIfBacteriumLocatedAtCenter() {
+    public void testNeighboursQty_IfBacteriumLocatedAtCenter() {
         int column = colony.getColumnQty() / 2;
         int row = colony.getRowQty() / 2;
         colony.createBacterium(column, row);

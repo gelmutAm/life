@@ -13,8 +13,6 @@ import java.awt.event.KeyListener;
  * <code>ParametersSelectionDialog</code> is a dialog window for a game settings.
  */
 public class ParametersSelectionDialog extends JFrame {
-    private static ParametersSelectionDialog instance;
-
     private static final int WIDTH = 300;
     private static final int HEIGHT = 200;
     private static final int TEXT_FIELD_SIZE = 3;
@@ -23,6 +21,8 @@ public class ParametersSelectionDialog extends JFrame {
 
     private static final int MIN_VALUE = 2;
     private static final int MAX_VALUE = 279;
+
+    private static ParametersSelectionDialog instance;
 
     private Button okButton;
     private JTextField columnsTextField;

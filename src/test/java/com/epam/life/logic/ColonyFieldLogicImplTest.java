@@ -17,7 +17,7 @@ public class ColonyFieldLogicImplTest {
     private final Pair<Integer, Integer> cellSize = new Pair<>(xCellSize, yCellSize);
 
     @Test
-    public void createsBacteriumWithCoordinatesIfDoesNotExist() {
+    public void testCreateBacterium_WithCoordinates_IfDoesNotExist() {
         int xCoord = 56;
         int yCoord = 56;
         Pair<Integer, Integer> coord = new Pair<>(xCoord, yCoord);
@@ -28,7 +28,35 @@ public class ColonyFieldLogicImplTest {
     }
 
     @Test
-    public void modifiesColonyIfEmptyCellHasThreeNeighbours() throws ExecutionException, InterruptedException {
+    public void testClearCell() {
+        int xCoord = 0;
+        int yCoord = 0;
+        Pair<Integer, Integer> coord = new Pair<>(xCoord, yCoord);
+        colonyFieldLogic.createBacterium(coord, cellSize);
+        colonyFieldLogic.clearCell(coord, cellSize);
+        assertTrue(colonyFieldLogic.colonyIsEmpty());
+    }
+
+    @Test
+    public void testClearColony() {
+        int xCoord = 0;
+        int yCoord = 0;
+        Pair<Integer, Integer> coord = new Pair<>(xCoord, yCoord);
+        colonyFieldLogic.createBacterium(coord, cellSize);
+        colonyFieldLogic.clearColony();
+        assertTrue(colonyFieldLogic.colonyIsEmpty());
+    }
+
+    @Test
+    public void testFillColony() {
+        Pair<Integer, Integer> maxCoord = new Pair<>(columnQty * xCellSize, rowQty * yCellSize);
+        int cellQty = columnQty * rowQty;
+        colonyFieldLogic.fillColony(maxCoord, cellSize, cellQty);
+        assertFalse(colonyFieldLogic.colonyIsEmpty());
+    }
+
+    @Test
+    public void testModifyColony_IfEmptyCellHasThreeNeighbours() throws ExecutionException, InterruptedException {
         int neighbour1Column = 1;
         int neighbour1Row = 0;
         Pair<Integer, Integer> neighbour1Coord = new Pair<>(neighbour1Column * cellSize.getKey(),
@@ -54,7 +82,7 @@ public class ColonyFieldLogicImplTest {
     }
 
     @Test
-    public void modifiesColonyIfBacteriumHasLessThanTwoNeighbours() throws ExecutionException, InterruptedException {
+    public void testModifyColony_IfBacteriumHasLessThanTwoNeighbours() throws ExecutionException, InterruptedException {
         int bacteriumColumn = 0;
         int bacteriumRow = 0;
         Pair<Integer, Integer> bacteriumCoord = new Pair<>(bacteriumColumn * cellSize.getKey(),
@@ -73,7 +101,7 @@ public class ColonyFieldLogicImplTest {
     }
 
     @Test
-    public void modifiesColonyIfBacteriumHasMoreThanFourNeighbours() throws ExecutionException, InterruptedException {
+    public void testModifyColony_IfBacteriumHasMoreThanFourNeighbours() throws ExecutionException, InterruptedException {
         int bacteriumColumn = 2;
         int bacteriumRow = 0;
         Pair<Integer, Integer> bacteriumCoord = new Pair<>(bacteriumColumn * cellSize.getKey(),
