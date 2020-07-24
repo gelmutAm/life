@@ -8,13 +8,13 @@ import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class ColonyFieldLogicImplTest {
+public class ColonyFieldLogicImplTest {
     private final int columnQty = 10;
     private final int rowQty = 10;
     private final ColonyFieldLogicImpl colonyFieldLogic = new ColonyFieldLogicImpl(columnQty, rowQty);
-    int xCellSize = 28;
-    int yCellSize = 28;
-    Pair<Integer, Integer> cellSize = new Pair<>(xCellSize, yCellSize);
+    private final int xCellSize = 28;
+    private final int yCellSize = 28;
+    private final Pair<Integer, Integer> cellSize = new Pair<>(xCellSize, yCellSize);
 
     @Test
     public void createsBacteriumWithCoordinatesIfDoesNotExist() {
